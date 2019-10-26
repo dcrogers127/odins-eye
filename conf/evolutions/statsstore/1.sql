@@ -20,7 +20,7 @@ CREATE TABLE games
     Notes VARCHAR(250) NOT NULL
 );
 
-COPY games FROM '/publc/data/path_to_csv_file.csv' WITH FORMAT csv;
+COPY games FROM 'public/data/path_to_csv_file.csv' WITH FORMAT csv;
 
 # --- !Downs
 
