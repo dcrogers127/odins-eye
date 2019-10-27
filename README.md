@@ -10,6 +10,7 @@ Data from https://www.basketball-reference.com/leagues/NBA_2020_games.html
 ## Commands to run first time
 sudo psql -U postgres --command "CREATE USER scalauser WITH SUPERUSER PASSWORD 'scalapass';"
 sudo createdb -U postgres -O scalauser authdb
+sudo createdb -U postgres -O scalauser eventstoredb
 sudo createdb -U postgres -O scalauser statsstoredb
 npm i
 
