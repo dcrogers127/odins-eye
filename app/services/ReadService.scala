@@ -33,7 +33,7 @@ class ReadService(actorSystem: ActorSystem, logDao: LogDao) {
   def getGames: Future[Seq[Game]] = {
     implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
     val actor = actorSystem.actorSelection(InMemoryReadActor.path)
-    (actor ? InMemoryReadActor.GetTags).mapTo[Seq[Game]]
+    (actor ? InMemoryReadActor.GetGames).mapTo[Seq[Game]]
   }
 }
 
