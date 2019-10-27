@@ -5,7 +5,7 @@ import model.Game
 
 class InMemoryReadDao(records: Seq[LogRecord]) {
   import scala.collection.mutable.{Map => MMap}
-  val games = MMap.empty[Game]
+  val games = MMap.empty[Int, Game]
 
   def init(): Unit = records.foreach(processEvent)
 
