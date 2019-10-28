@@ -5,6 +5,9 @@
 GET     /                           controllers.MainController.index
 GET     /500                        controllers.MainController.error500
 
+GET     /api/games                  controllers.GameController.getGames
+
+
 # Security
 GET     /login                      controllers.AuthController.login
 POST    /login                      controllers.AuthController.doLogin
