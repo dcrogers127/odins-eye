@@ -2,9 +2,6 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-Date,Start (ET),Visitor/Neutral,PTS,Home/Neutral,PTS,,,Attend.,Notes
-Tue Oct 22 2019,8:00p,New Orleans Pelicans,122,Toronto Raptors,130,Box Score,OT,20787,
-
 CREATE TABLE games
 (
     id SERIAL UNIQUE PRIMARY KEY,
@@ -20,7 +17,7 @@ CREATE TABLE games
     Notes VARCHAR(250) NOT NULL
 );
 
-COPY games FROM 'public/data/path_to_csv_file.csv' WITH FORMAT csv;
+-- COPY games FROM 'public/data/path_to_csv_file.csv' WITH FORMAT csv;
 
 # --- !Downs
 
