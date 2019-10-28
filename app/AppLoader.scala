@@ -37,6 +37,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   lazy val mainController = wire[MainController]
   lazy val authController = wire[AuthController]
+  lazy val gameController = wire[GameController]
 
   lazy val sessionDao = wire[SessionDao]
   lazy val userDao = wire[UserDao]
