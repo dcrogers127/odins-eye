@@ -1,6 +1,7 @@
 package model
 
 import scalikejdbc.WrappedResultSet
+import play.api.libs.json.Json
 
 case class Game(
   game_date: String,
@@ -16,4 +17,8 @@ object Game {
       rs.string("visitor"), rs.string("visitor_pts"),
       rs.string("home"), rs.string("home_pts"))
   }
+
+  implicit val writes = Json.writes[Game]
 }
+
+
