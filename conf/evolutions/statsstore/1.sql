@@ -17,7 +17,7 @@ CREATE TABLE games
     Notes VARCHAR(250) NOT NULL
 );
 
-COPY games FROM 'public/data/path_to_csv_file.csv' DELIMITERS ',' CSV;
+-- COPY games FROM 'public/data/games.csv' DELIMITERS ',' CSV;
 
 # --- !Downs
 
