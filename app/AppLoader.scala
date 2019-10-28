@@ -41,11 +41,13 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
 
   lazy val sessionDao = wire[SessionDao]
   lazy val userDao = wire[UserDao]
+  lazy val logDao = wire[LogDao]
 
   lazy val userService = wire[UserService]
   lazy val authService = wire[AuthService]
   lazy val userAuthAction = wire[UserAuthAction]
   lazy val userAwareAction = wire[UserAwareAction]
+  lazy val readService = wire[ReadService]
 
   override lazy val dynamicEvolutions = new DynamicEvolutions
 
