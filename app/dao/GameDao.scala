@@ -51,6 +51,7 @@ class GameDao {
                  |  "$attend",
                  |  "$notes"
                  |) """.update.apply()
+          case _ => Unit
         }
       }
     }
