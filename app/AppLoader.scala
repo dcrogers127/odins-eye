@@ -49,6 +49,8 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   lazy val userAwareAction = wire[UserAwareAction]
   lazy val readService: ReadService = wire[ReadService]
 
+  lazy val gameDao: GameDao = wire[GameDao]
+
   override lazy val dynamicEvolutions = new DynamicEvolutions
 
   applicationLifecycle.addStopHook { () =>
@@ -62,5 +64,6 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     if (evolutions.upToDate) {
       readService.init()
     }
+    gameDao.insertGames
   }
 }

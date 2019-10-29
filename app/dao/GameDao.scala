@@ -27,30 +27,29 @@ class GameDao {
             ot,
             attend,
             notes
-          )) =>
-            sql"""insert into games (
-                 |  game_date,
-                 |  start_et,
-                 |  visitor,
-                 |  visitor_pts,
-                 |  home,
-                 |  home_pts,
-                 |  box_score_url,
-                 |  ot,
-                 |  attend,
-                 |  notes
-                 |) values (
-                 |  "$game_date",
-                 |  "$start_et",
-                 |  "$visitor",
-                 |  "$visitor_pts",
-                 |  "$home",
-                 |  "$home_pts",
-                 |  "$box_score_url",
-                 |  "$ot",
-                 |  "$attend",
-                 |  "$notes"
-                 |) """.update.apply()
+          )) => sql"""insert into games (
+                   game_date,
+                   start_et,
+                   visitor,
+                   visitor_pts,
+                   home,
+                   home_pts,
+                   box_score_url,
+                   ot,
+                   attend,
+                   notes
+                 ) values (
+                   $game_date,
+                   $start_et,
+                   $visitor,
+                   $visitor_pts,
+                   $home,
+                   $home_pts,
+                   $box_score_url,
+                   $ot,
+                   $attend,
+                   $notes
+                 )""".update().apply()
           case _ => Unit
         }
       }
