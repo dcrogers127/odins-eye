@@ -5,16 +5,16 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE games
 (
     id SERIAL UNIQUE PRIMARY KEY,
-    game_date VARCHAR(250) NOT NULL,
-    start_et VARCHAR(250) NOT NULL,
-    visitor VARCHAR(250) NOT NULL,
-    visitor_pts VARCHAR(250) NOT NULL,
-    home VARCHAR(250) NOT NULL,
-    home_pts VARCHAR(250) NOT NULL,
-    box_score_url VARCHAR(250) NOT NULL,
-    ot VARCHAR(250) NOT NULL,
-    Attend VARCHAR(250) NOT NULL,
-    Notes VARCHAR(250) NOT NULL
+    game_date varchar(250) not null,
+    start_et varchar(250) not null,
+    visitor varchar(250) not null,
+    visitor_pts varchar(250) not null,
+    home varchar(250) not null,
+    home_pts varchar(250) not null,
+    box_score_url varchar(250) not null,
+    ot varchar(250) not null,
+    attend varchar(250) not null,
+    notes varchar(250) not null
 );
 
 # --- !Downs
