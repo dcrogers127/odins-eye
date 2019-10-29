@@ -14,6 +14,8 @@ sudo createdb -U postgres -O scalauser eventstoredb
 sudo createdb -U postgres -O scalauser statsstoredb
 npm i
 
+sudo dropdb -U postgres statsstoredb
+
 
 ### Commands to run web app
 npm run watch

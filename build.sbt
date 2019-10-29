@@ -6,6 +6,11 @@ scalaVersion := "2.12.8"
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala)
 
+resolvers ++= Seq(
+  Resolver.sonatypeRepo("releases"),
+  Resolver.sonatypeRepo("snapshots")
+)
+
 pipelineStages := Seq(digest)
 
 libraryDependencies ++= Seq(
@@ -16,5 +21,6 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc" %% "scalikejdbc" % "3.3.2",
   "org.scalikejdbc" %% "scalikejdbc-config"  % "3.3.2",
   "ch.qos.logback"  %  "logback-classic" % "1.2.3",
-  "de.svenkubiak" % "jBCrypt" % "0.4.1"
+  "de.svenkubiak" % "jBCrypt" % "0.4.1",
+  "com.chuusai" %% "shapeless" % "2.3.3"
 )
