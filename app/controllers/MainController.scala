@@ -10,8 +10,7 @@ class MainController(components: ControllerComponents, assets: Assets, userAuthA
                      userAwareAction: UserAwareAction) extends AbstractController(components) {
 
   def index = userAwareAction { request =>
-    Ok(views.html.pages.react(buildNavData(request),
-      WebPageData("Home")))
+    Ok(views.html.pages.react(buildNavData(request), WebPageData("Home")))
   }
 
   def error500 = Action {

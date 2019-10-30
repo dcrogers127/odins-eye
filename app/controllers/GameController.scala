@@ -1,5 +1,6 @@
 package controllers
 
+import model.WebPageData
 import play.api.mvc.{AbstractController, ControllerComponents}
 import play.api.libs.json.Json
 import security.UserAuthAction
@@ -13,5 +14,9 @@ class GameController(components: ControllerComponents,
   def getGames = Action.async { implicit request =>
     val gamesF = readService.getGames
     gamesF.map { games => Ok(Json.toJson(games)) }
+  }
+
+  def index = Action { request =>
+    Ok(views.html.pages.react(buildNavData(request), WebPageData("Games")))
   }
 }
