@@ -15,8 +15,4 @@ class GameController(components: ControllerComponents,
     val gamesF = readService.getGames
     gamesF.map { games => Ok(Json.toJson(games)) }
   }
-
-  def index = Action { request =>
-    Ok(views.html.pages.react(buildNavData(request), WebPageData("Games")))
-  }
 }
