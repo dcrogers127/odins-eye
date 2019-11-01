@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -18,58 +19,71 @@ const useStyles = makeStyles({
   },
 });
 
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Susie cake', 356, 16.0, 49, 3.9),
+];
+
 class GameManager extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   games: []
-    // };
+    this.state = {
+      games: []
+    };
   };
 
-  // handleResponse = (response) => {
-  //   if (response.status == 200) {
-  //     this.setState({
-  //       games: response.data
-  //     })
-  //   } else {
-  //     console.error(response.statusText);
-  //   }
-  // }
+  handleResponse = (response) => {
+    if (response.status == 200) {
+      console.log(response.data);
+      this.setState({
+        games: response.data
+      })
+    } else {
+      console.error(response.statusText);
+    }
+  };
 
-  // componentDidMount=()=>{
-  //   axios.get("/games").then(this.handleResponse);
-  // };
+  componentDidMount = () => {
+    axios.get("/api/games").then(this.handleResponse);
+  };
 
   render = () => {
-    // const games = this.state.games;
-    return (
+    return <div className="game-manager">
       <Paper className={"root"}>
         <Table className={"table"} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell align="right">Visitor</TableCell>
+              <TableCell align="right">Visitor PTS</TableCell>
+              <TableCell align="right">Home</TableCell>
+              <TableCell align="right">Home PTS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.name}>
+            {this.state.data.map(row => (
+              <TableRow key={row.game_date}>
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.game_date}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell align="right">{row.visitor}</TableCell>
+                <TableCell align="right">{row.visitor_pts}</TableCell>
+                <TableCell align="right">{row.home}</TableCell>
+                <TableCell align="right">{row.home_pts}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </Paper>
-    );
+    </div>;
   }
 }
 
