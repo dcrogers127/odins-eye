@@ -21,30 +21,30 @@ const useStyles = makeStyles({
 class GameManager extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      games: []
-    };
+    // this.state = {
+    //   games: []
+    // };
   };
 
-  handleResponse = (response) => {
-    if (response.status == 200) {
-      this.setState({
-        games: response.data
-      })
-    } else {
-      console.error(response.statusText);
-    }
-  }
+  // handleResponse = (response) => {
+  //   if (response.status == 200) {
+  //     this.setState({
+  //       games: response.data
+  //     })
+  //   } else {
+  //     console.error(response.statusText);
+  //   }
+  // }
 
-  componentDidMount=()=>{
-    axios.get("/games").then(this.handleResponse);
-  };
+  // componentDidMount=()=>{
+  //   axios.get("/games").then(this.handleResponse);
+  // };
 
   render = () => {
-    const games = this.state.games;
+    // const games = this.state.games;
     return (
-      <Paper className={classes.root}>
-        <Table className={classes.table} aria-label="simple table">
+      <Paper className={"root"}>
+        <Table className={"table"} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Dessert (100g serving)</TableCell>
