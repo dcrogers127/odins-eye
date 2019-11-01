@@ -13,8 +13,8 @@ class GameDao {
     val dataPath = "public/data/games.csv"
     val reader = new CSVReader(new java.io.FileReader(dataPath))
     val rows = reader.readAll.asScala.map(row => rowParserFor[GameCSV](row.toList))
-    NamedDB('statsstore).localTx{ implicit session => sql"delete from games" }
     NamedDB('statsstore).localTx{ implicit session =>
+      sql"delete from games".update().apply()
       for (row <- rows) {
         row match {
           case Success(GameCSV(
