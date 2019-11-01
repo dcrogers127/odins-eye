@@ -8,6 +8,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 650,
+  },
+});
+
 class GameManager extends React.Component {
   constructor(props) {
     super(props);
@@ -15,16 +25,6 @@ class GameManager extends React.Component {
       games: []
     };
   };
-
-  const useStyles = makeStyles({
-    root: {
-      width: '100%',
-      overflowX: 'auto',
-    },
-    table: {
-      minWidth: 650,
-    },
-  });
 
   handleResponse = (response) => {
     if (response.status == 200) {
@@ -37,7 +37,7 @@ class GameManager extends React.Component {
   }
 
   componentDidMount=()=>{
-    axios.get("/api/games").then(this.handleResponse);
+    axios.get("/games").then(this.handleResponse);
   };
 
   render = () => {

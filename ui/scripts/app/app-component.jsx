@@ -19,10 +19,7 @@ class AppComponent {
     });
   };
   renderComponent = () => {
-    const reactDiv = document.getElementById('reactDiv');
-    if (!!reactDiv) {
-      ReactDOM.render(<GameManager />, reactDiv);
-    }
+    ReactDOM.render(<GameManager />, reactDiv);
   }
 }
 
