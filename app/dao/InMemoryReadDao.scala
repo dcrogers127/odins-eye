@@ -1,22 +1,17 @@
 package dao
-
-import model.LogRecord
 import model.Game
 
-class InMemoryReadDao(records: Seq[LogRecord]) {
+class InMemoryReadDao(sGames: Seq[Game]) {
   import scala.collection.mutable.{Map => MMap}
   val games = MMap.empty[Int, Game]
 
-  def init(): Unit = records.foreach(processEvent)
+  def init(): Unit = sGames.foreach(processGames)
 
-  def processEvent(record: LogRecord): Unit = {
-    record.action match {
-      case _ => ()
-    }
+  def processGames(game: Game): Unit = {
+    games += (game.id -> game)
   }
 
   def getGames: Seq[Game] = {
     games.values.toList.sortWith(_.game_date < _.game_date)
   }
 }
-

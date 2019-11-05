@@ -1,6 +1,5 @@
 package controllers
 
-import model.WebPageData
 import play.api.mvc.{AbstractController, ControllerComponents}
 import play.api.libs.json.Json
 import security.UserAuthAction

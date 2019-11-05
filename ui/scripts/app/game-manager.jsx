@@ -41,8 +41,8 @@ class GameManager extends React.Component {
   };
 
   handleResponse = (response) => {
+    console.log(response);
     if (response.status == 200) {
-      console.log(response.data);
       this.setState({
         games: response.data
       })
@@ -69,8 +69,8 @@ class GameManager extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.data.map(row => (
-              <TableRow key={row.game_date}>
+            {rows.map(row => (
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.game_date}
                 </TableCell>

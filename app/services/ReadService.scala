@@ -2,25 +2,24 @@ package services
 
 import actors.InMemoryReadActor
 import akka.actor.ActorSystem
-
-import dao.LogDao
+import dao.{GameDao, LogDao}
 import model.Game
 import play.api.Logger
 
 import scala.util.{Failure, Success}
 
-class ReadService(actorSystem: ActorSystem, logDao: LogDao) {
+class ReadService(actorSystem: ActorSystem, gameDao: GameDao) {
   val log = Logger(this.getClass)
 
   def init(): Unit = {
-    val logRecordsT = logDao.getLogRecords
-    logRecordsT match {
+    val gamesT = gameDao.initGames
+    gamesT match {
       case Failure(th) =>
-        log.error("Error while initializing the read service", th)
+        log.error("Error while initializing the game read service", th)
         throw th
-      case Success(logRecords) =>
+      case Success(games) =>
         val actor = actorSystem.actorOf(
-          InMemoryReadActor.props(logRecords), InMemoryReadActor.name)
+          InMemoryReadActor.props(games), InMemoryReadActor.name)
         actor ! InMemoryReadActor.InitializeState
     }
   }

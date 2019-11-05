@@ -1,30 +1,27 @@
 package actors
 
 import akka.actor.{Actor, Props}
-import model.LogRecord
+import model.Game
 import dao.InMemoryReadDao
 
-class InMemoryReadActor(logRecords: Seq[LogRecord])
+class InMemoryReadActor(games: Seq[Game])
   extends Actor {
   import InMemoryReadActor._
 
-  val readDao = new InMemoryReadDao(logRecords)
+  val gameDao = new InMemoryReadDao(games)
 
   override def receive: Receive = {
-    case InitializeState => readDao.init()
-    case GetGames => sender() ! readDao.getGames
-    case ProcessEvent(event) => sender() ! readDao.processEvent(event)
+    case InitializeState => gameDao.init
+    case GetGames => sender() ! gameDao.getGames
   }
 }
 
 object InMemoryReadActor {
-  case class ProcessEvent(event: LogRecord)
   case object InitializeState
   case object GetGames
 
   val name = "in-memory-read-actor"
   val path = s"/user/$name"
-  def props(logRecords: Seq[LogRecord]) =
-    Props(new InMemoryReadActor(logRecords))
+  def props(games: Seq[Game]) = Props(new InMemoryReadActor(games))
 }
 

@@ -57,10 +57,9 @@ class GameDao {
     }
   }
 
-  def getGames: Try[Seq[Game]] = Try {
+  def initGames: Try[Seq[Game]] = Try {
     NamedDB('statsstore).readOnly { implicit session =>
       sql"select * from games".map(Game.fromRS).list().apply()
     }
   }
-
 }

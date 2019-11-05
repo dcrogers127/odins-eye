@@ -64,6 +64,5 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     if (evolutions.upToDate) {
       readService.init()
     }
-    gameDao.insertGames
   }
 }
