@@ -69,7 +69,7 @@ class GameManager extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => (
+            {this.state.games.map(row => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.game_date}

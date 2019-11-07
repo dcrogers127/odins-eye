@@ -8,7 +8,6 @@ import services.ReadService
 class GameController(components: ControllerComponents,
                      userAuthAction: UserAuthAction, readService: ReadService) extends AbstractController(components) {
 
-
   import scala.concurrent.ExecutionContext.Implicits.global
   def getGames = Action.async { implicit request =>
     val gamesF = readService.getGames
