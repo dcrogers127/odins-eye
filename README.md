@@ -31,7 +31,6 @@ sudo dropdb -U postgres statsstoredb
 
 ### Commands to run web app
 npm run watch
-
 sbt run
 
 
