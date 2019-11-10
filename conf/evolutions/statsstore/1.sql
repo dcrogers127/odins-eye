@@ -2,7 +2,7 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE games
+CREATE TABLE stg_games
 (
     id SERIAL UNIQUE PRIMARY KEY,
     game_date varchar(250) not null,
@@ -17,8 +17,22 @@ CREATE TABLE games
     notes varchar(250) not null
 );
 
+CREATE TABLE games
+(
+    game_id varchar UNIQUE PRIMARY KEY,  -- concatenation of game_date, visitor, and home
+    game_date date not null,
+    start_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    visitor varchar(250) not null,
+    visitor_pts int,
+    home varchar(250) not null,
+    home_pts int,
+    ot varchar(250) not null
+);
+
+
 # --- !Downs
 
+DROP TABLE stg_games;
 DROP TABLE games;
 
 DROP EXTENSION "uuid-ossp";
