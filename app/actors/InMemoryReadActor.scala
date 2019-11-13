@@ -1,7 +1,7 @@
 package actors
 
 import akka.actor.{Actor, Props}
-import model.Game
+import model.{Game, LogRecord}
 import dao.InMemoryReadDao
 
 class InMemoryReadActor(games: Seq[Game])
@@ -13,10 +13,12 @@ class InMemoryReadActor(games: Seq[Game])
   override def receive: Receive = {
     case InitializeState => gameDao.init
     case GetGames => sender() ! gameDao.getGames
+    case ProcessEvent(event) => sender() ! gameDao.processEvent(event)
   }
 }
 
 object InMemoryReadActor {
+  case class ProcessEvent(event: LogRecord)
   case object InitializeState
   case object GetGames
 

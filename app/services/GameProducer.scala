@@ -21,12 +21,12 @@ class GameProducer(actorSystem: ActorSystem, configuration: Configuration) {
     kafkaProducer.send(record.encode)
   }
 
-  def addScore(game: Score): Unit = {
-    val id = UUID.randomUUID()
-    val event = GameCreated(id, game)
-    val record = createLogRecord(event)
-    kafkaProducer.send(record.encode)
-  }
+  // def addScore(game: Score): Unit = {
+  //   val id = UUID.randomUUID()
+  //   val event = GameCreated(id, game)
+  //   val record = createLogRecord(event)
+  //   kafkaProducer.send(record.encode)
+  // }
 
   private def createLogRecord(eventData: EventData): LogRecord = {
     LogRecord(UUID.randomUUID(), eventData.action, eventData.json, ZonedDateTime.now())

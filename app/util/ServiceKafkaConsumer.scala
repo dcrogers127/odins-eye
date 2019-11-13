@@ -25,8 +25,7 @@ class ServiceKafkaConsumer(topicNames: Set[String], groupName: String,
     .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, config.get[String]("auto.offset.reset"))
 
   import akka.kafka.scaladsl.Consumer
-  Consumer.committableSource(consumerSettings,
-    Subscriptions.topics(topicNames)).mapAsync(1) { msg =>
+  Consumer.committableSource(consumerSettings, Subscriptions.topics(topicNames)).mapAsync(1) { msg =>
     val event = msg.record.value()
     handleEvent(event)
     Future.successful(msg)
