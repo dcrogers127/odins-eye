@@ -16,7 +16,14 @@ class GameProducer(actorSystem: ActorSystem, configuration: Configuration) {
 
   def createGame(game: GameBase): Unit = {
     val id = UUID.randomUUID()
-    val event = GameCreated(id, game)
+    val event = GameCreated(
+      id,
+      game.game_id,
+      game.game_date,
+      game.start_time,
+      game.visitor,
+      game.home
+    )
     val record = createLogRecord(event)
     kafkaProducer.send(record.encode)
   }

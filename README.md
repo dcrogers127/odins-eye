@@ -44,6 +44,8 @@ sudo dropdb -U postgres statsstoredb
 
 
 ### Commands to run web app
+./bin/zookeeper-server-start.sh config/zookeeper.properties
+./bin/kafka-server-start.sh config/server.properties
 npm run watch
 sbt run
 
