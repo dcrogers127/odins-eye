@@ -2,7 +2,8 @@ package dao
 
 import java.text.SimpleDateFormat
 
-import model.{Game, GameBase, GameCSV, Score} import fileio.RowParser.rowParserFor
+import model.{Game, GameBase, GameCSV, Score}
+import fileio.RowParser.rowParserFor
 import scalikejdbc._
 import au.com.bytecode.opencsv._
 
@@ -19,10 +20,9 @@ class GameDao {
     val rows = reader.readAll.asScala
       .map(row => rowParserFor[GameCSV](row.toList))
       .toList
+      .flatMap(_.toOption)
     rows.map {
-      case Success(
-        GameCSV(game_date_str, start_et, visitor, _, home, _, _, _, _, _ )
-      ) => {
+      case GameCSV(game_date_str, start_et, visitor, _, home, _, _, _, _, _ ) => {
         val game_date = brDataFormat.parse(game_date_str)
         val gameDateStr = dateFormat.format(game_date)
         GameBase(

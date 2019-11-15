@@ -1,6 +1,5 @@
 package events.gameInfo
 
-import java.time.ZonedDateTime
 import java.util.{Date, UUID}
 
 import events.EventData
@@ -10,7 +9,7 @@ case class GameCreated(
     id: UUID,
     game_id: String,
     game_date: Date,
-    start_time: ZonedDateTime,
+    start_time: String,
     visitor: String,
     home: String
   ) extends EventData {
