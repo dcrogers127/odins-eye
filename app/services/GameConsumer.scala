@@ -8,8 +8,6 @@ import model.ServerSentMessage
 import play.api.Configuration
 import util.ServiceKafkaConsumer
 
-import scala.concurrent.Future
-
 class GameConsumer(readService: ReadService, actorSystem: ActorSystem,
                        configuration: Configuration, materializer: Materializer) {
 
@@ -31,8 +29,8 @@ class GameConsumer(readService: ReadService, actorSystem: ActorSystem,
     implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
     val imrActor = actorSystem.actorSelection(InMemoryReadActor.path)
     (imrActor ? InMemoryReadActor.ProcessEvent(logRecord)).foreach { _ =>
-      readService.getGames.foreach { tags =>
-        val update = ServerSentMessage.create("games", tags)
+      readService.getGames.foreach { games =>
+        val update = ServerSentMessage.create("games", games)
         val esActor = actorSystem.actorSelection(EventStreamActor.pathPattern)
         esActor ! EventStreamActor.DataUpdated(update.json)
       }
