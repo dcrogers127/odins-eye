@@ -10,13 +10,10 @@ import util.ServiceKafkaConsumer
 
 import scala.concurrent.Future
 
-/**
-  * Created by denis on 12/3/16.
-  */
 class GameConsumer(readService: ReadService, actorSystem: ActorSystem,
                        configuration: Configuration, materializer: Materializer) {
 
-  val topicName = "tags"
+  val topicName = "games"
   val serviceKafkaConsumer = new ServiceKafkaConsumer(Set(topicName),
     "read", materializer, actorSystem, configuration, handleEvent)
 

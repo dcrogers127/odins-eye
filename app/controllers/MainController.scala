@@ -7,10 +7,12 @@ import play.api.mvc._
 import security.{UserAuthAction, UserAwareAction, UserAwareRequest}
 import akka.actor.ActorSystem
 import akka.stream.{Materializer, OverflowStrategy}
+import services.ConsumerAggregator
 
 class MainController(components: ControllerComponents, assets: Assets,
                      actorSystem: ActorSystem,
                      mat: Materializer,
+                     consumerAggregator: ConsumerAggregator,
                      userAuthAction: UserAuthAction, userAwareAction: UserAwareAction)
   extends AbstractController(components) {
 
