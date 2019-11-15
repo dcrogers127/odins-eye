@@ -2,8 +2,7 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE logs
-(
+CREATE TABLE logs (
   record_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   action_name VARCHAR(250) NOT NULL,
   event_data TEXT NOT NULL,

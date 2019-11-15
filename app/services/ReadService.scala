@@ -12,6 +12,7 @@ class ReadService(actorSystem: ActorSystem, gameDao: GameDao) {
   val log = Logger(this.getClass)
 
   def init(): Unit = {
+    gameDao.processGameCSV
     val gamesT = gameDao.initGames
     gamesT match {
       case Failure(th) =>

@@ -1,14 +1,13 @@
 package model
 
 import java.util.Date
-import java.time.ZonedDateTime
 
 import play.api.libs.json.Json
 
 case class GameBase (
   game_id: String,
   game_date: Date,
-  start_time: ZonedDateTime,
+  start_time: String,
   visitor: String,
   home: String
 )
