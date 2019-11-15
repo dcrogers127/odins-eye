@@ -8,11 +8,14 @@ import play.api.Logger
 
 import scala.util.{Failure, Success}
 
-class ReadService(actorSystem: ActorSystem, gameDao: GameDao) {
+class ReadService(actorSystem: ActorSystem, gameDao: GameDao, gameProducer: GameProducer) {
   val log = Logger(this.getClass)
 
   def init(): Unit = {
-    gameDao.processGameCSV
+    val gamesBase = gameDao.processGameCSV
+    gamesBase.foreach{
+      game => gameProducer.createGame(game)
+    }
     val gamesT = gameDao.initGames
     gamesT match {
       case Failure(th) =>

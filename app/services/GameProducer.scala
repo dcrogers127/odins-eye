@@ -6,7 +6,7 @@ import java.util.UUID
 
 import events.EventData
 import events.gameInfo.GameCreated
-import model.{GameBase, Score, LogRecord}
+import model.{GameBase, LogRecord, Score}
 import play.api.Configuration
 import util.ServiceKafkaProducer
 
