@@ -1,11 +1,15 @@
 package model
 
+import java.time.ZonedDateTime
+import java.util.Date
+
 import scalikejdbc.WrappedResultSet
 import play.api.libs.json.Json
 
 case class Game(
-  id: Int,
+  game_id: String,
   game_date: String,
+  start_time: String,
   visitor: String,
   visitor_pts: String,
   home: String,
@@ -14,7 +18,8 @@ case class Game(
 
 object Game {
   def fromRS(rs: WrappedResultSet): Game = {
-    Game(rs.int("id"), rs.string("game_date"),
+    Game(rs.string("game_id"),
+      rs.string("game_date"), rs.string("start_time"),
       rs.string("visitor"), rs.string("visitor_pts"),
       rs.string("home"), rs.string("home_pts"))
   }

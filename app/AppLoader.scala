@@ -49,6 +49,11 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   lazy val userAwareAction = wire[UserAwareAction]
   lazy val readService: ReadService = wire[ReadService]
 
+  lazy val gameProducer = wire[GameProducer]
+  lazy val logRecordConsumer = wire[LogRecordConsumer]
+  lazy val gameConsumer = wire[GameConsumer]
+  lazy val consumerAggregator = wire[ConsumerAggregator]
+
   lazy val gameDao: GameDao = wire[GameDao]
 
   override lazy val dynamicEvolutions = new DynamicEvolutions
