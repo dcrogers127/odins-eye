@@ -16,7 +16,7 @@ class InMemoryReadDao(sGames: Seq[Game]) {
     record.action match {
       case GameCreated.actionName =>
         val event = record.data.as[GameCreated]
-        games += (event.game_id -> Game(
+        val game = Game(
           event.game_id,
           event.game_date,
           event.start_time,
@@ -24,7 +24,8 @@ class InMemoryReadDao(sGames: Seq[Game]) {
           "",
           event.home,
           ""
-        ))
+        )
+        games += (event.game_id -> game)
     }
   }
 

@@ -10,7 +10,7 @@ CREATE TABLE games (
     visitor_pts int,
     home varchar(250) not null,
     home_pts int,
-    ot varchar(250) not null
+    ot varchar(250)
 );
 
 # --- !Downs

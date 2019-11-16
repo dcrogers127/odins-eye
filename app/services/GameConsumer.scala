@@ -3,12 +3,13 @@ package services
 import actors.{EventStreamActor, InMemoryReadActor}
 import akka.actor.ActorSystem
 import akka.stream.Materializer
-import model.LogRecord
-import model.ServerSentMessage
+import dao.GameDao
+import model.{GameBase, LogRecord, ServerSentMessage}
 import play.api.Configuration
 import util.ServiceKafkaConsumer
+import play.api.libs.json.Json
 
-class GameConsumer(readService: ReadService, actorSystem: ActorSystem,
+class GameConsumer(readService: ReadService, gameDao: GameDao, actorSystem: ActorSystem,
                        configuration: Configuration, materializer: Materializer) {
 
   val topicName = "games"
@@ -17,7 +18,13 @@ class GameConsumer(readService: ReadService, actorSystem: ActorSystem,
 
   private def handleEvent(event: String): Unit = {
     val maybeLogRecord = LogRecord.decode(event)
-    maybeLogRecord.foreach(adjustReadState)
+    maybeLogRecord.foreach { logRecord =>
+      adjustReadState(logRecord)
+      val maybeGameBase = Json.fromJson[GameBase](logRecord.data)
+      maybeGameBase.foreach{ gameBase =>
+        gameDao.insertGame(gameBase)
+      }
+    }
   }
 
   import java.util.concurrent.TimeUnit
