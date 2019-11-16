@@ -8,7 +8,7 @@ import play.api.libs.json.Json
 
 case class Game(
   game_id: String,
-  game_date: Date,
+  game_date: String,
   start_time: String,
   visitor: String,
   visitor_pts: String,
@@ -19,7 +19,7 @@ case class Game(
 object Game {
   def fromRS(rs: WrappedResultSet): Game = {
     Game(rs.string("game_id"),
-      rs.date("game_date"), rs.string("start_time"),
+      rs.string("game_date"), rs.string("start_time"),
       rs.string("visitor"), rs.string("visitor_pts"),
       rs.string("home"), rs.string("home_pts"))
   }

@@ -18,7 +18,7 @@ class InMemoryReadDao(sGames: Seq[Game]) {
         val event = record.data.as[GameCreated]
         val game = Game(
           event.game_id,
-          event.game_date,
+          event.game_date.toString,
           event.start_time,
           event.visitor,
           "",
