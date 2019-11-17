@@ -1,4 +1,4 @@
-# odens-eye
+# odins-eye
 
 Goals:
 1. Abstract InMemoryDao\Actor to generalize events
