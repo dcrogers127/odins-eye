@@ -25,5 +25,6 @@ libraryDependencies ++= Seq(
   "com.chuusai" %% "shapeless" % "2.3.3",
   "au.com.bytecode" % "opencsv" % "2.4",
   "de.svenkubiak" % "jBCrypt" % "0.4.1",
-  "com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC1"
+  "com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC1",
+  "org.jsoup" % "jsoup" % "1.8.3"
 )

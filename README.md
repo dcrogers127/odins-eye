@@ -53,4 +53,4 @@ sbt run
 ### Notes
 Rendering table with npm package material-ui (see https://material-ui.com)
 
-
+Sports API with free tier.
