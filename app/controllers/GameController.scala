@@ -9,7 +9,7 @@ class GameController(components: ControllerComponents,
                      userAuthAction: UserAuthAction, readService: ReadService) extends AbstractController(components) {
 
   import scala.concurrent.ExecutionContext.Implicits.global
-  def getGames = Action.async { implicit request =>
+  def getGames = userAuthAction.async { implicit request =>
     val gamesF = readService.getGames
     gamesF.map { games => Ok(Json.toJson(games)) }
   }
