@@ -3,26 +3,28 @@ package dao
 import java.text.SimpleDateFormat
 
 import model._
-import fileio.RowParser.rowParserFor
+// import fileio.RowParser.rowParserFor
 import scalikejdbc._
-import au.com.bytecode.opencsv._
-import common.Common._
+// import au.com.bytecode.opencsv._
+import common.Common.{teamToTm, _}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import play.api.Logger
 
-import scala.collection.JavaConverters._
+// import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import scala.util.{Failure, Success, Try}
 
 class GameDao {
   val log = Logger(this.getClass)
 
-  private val dataPath = "public/data/games.csv"
   private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
-  private val brDataFormat = new SimpleDateFormat("E MMM dd yyyy")
   private val brWebDataFormat = new SimpleDateFormat("E, MMM dd, yyyy")
   private val sleepSecs = 3
+
+/*
+  private val dataPath = "public/data/games.csv"
+  private val brDataFormat = new SimpleDateFormat("E MMM dd yyyy")
 
   def processGameCSV: List[GameBase] = {
     val reader = new CSVReader(new java.io.FileReader(dataPath))
@@ -60,17 +62,6 @@ class GameDao {
            ${game.visitor},
            ${game.home}
      )""".update().apply()
-    }
-  }
-
-  def updateScore(score: Score): Unit = {
-    NamedDB('statsstore).localTx{ implicit session =>
-      sql"""update games
-        set visitor_pts = ${score.visitor_pts},
-           home_pt = ${score.home_pts}
-           ot = '${score.ot}'
-        where game_id = '${score.game_id}'
-       """.update().apply()
     }
   }
 
@@ -120,6 +111,7 @@ class GameDao {
       }
     }
   }
+  */
 
   def initGames: Try[Seq[Game]] = Try {
     NamedDB('statsstore).readOnly { implicit session =>
@@ -130,21 +122,26 @@ class GameDao {
   private def extractScheduleData(e: Element): Try[ScheduleElement] = {
     Try{
       val td = e.select("td")
+      val gameDate = brWebDataFormat.parse(e.select("th").first().text())
       val awayTeam = td.eq(1).text()
       val homeTeam = td.eq(3).text()
+      val awayTm = teamToTm(awayTeam)
+      val homeTm = teamToTm(homeTeam)
+
       ScheduleElement(
-        brWebDataFormat.parse(e.select("th").first().text()), // gameDate
+        s"${dateFormat.format(gameDate)}_${awayTm}_$homeTm", // gameId
+        gameDate, // gameDate
         td.eq(0).text(), // startEt
         awayTeam, // awayTeam
-        teamToTm(awayTeam), // awayTm
+        awayTm, // awayTm
         Try(td.eq(2).text().toInt).toOption, // awayPoints
-        homeTeam, // HomeTeam
-        teamToTm(homeTeam), // HomeTm
+        homeTeam, // homeTeam
+        homeTm, // homeTm
         Try(td.eq(4).text().toInt).toOption, // homePoints
-        td.eq(6).text(), //overtime
-        td.eq(7).text(),
-        td.eq(8).text(),
-        td.eq(5).select("a").attr("href")
+        td.eq(6).text(), // overtime
+        td.eq(7).text(), // attendance
+        td.eq(8).text(), // notes
+        td.eq(5).select("a").attr("href") // boxScoreUrl
       )
     }
   }
@@ -162,7 +159,7 @@ class GameDao {
         var numFailures = 0
         rows.forEach{ r =>
           extractScheduleData(r) match {
-            case Success(_) => cleanElements += _
+            case Success(g) => cleanElements += g
             case Failure(_) => numFailures += 1
           }
         }
@@ -178,7 +175,7 @@ class GameDao {
 
   def cleanGameDB: Unit = {
     NamedDB('statsstore).localTx { implicit session =>
-      sql"delete from stg_games".update().apply()
+      sql"delete from games".update().apply()
     }
   }
 
@@ -187,33 +184,45 @@ class GameDao {
     NamedDB('statsstore).localTx{ implicit session =>
       for (game <- games) {
         sql"""insert into games (
-          game.gameDate,
-          game.startEt,
-          game.awayTeam,
-          game.awayTm,
-          game.awayPoints,
-          game.homeTeam,
-          game.homeTm,
-          game.homePoints,
-          game.overtime,
-          game.attendance,
-          game.notes,
-          game.boxScoreUrl
+          game_id,
+          game_date,
+          start_time,
+          away_team,
+          away_tm,
+          home_team,
+          home_tm,
+          away_pts,
+          home_pts,
+          ot,
+          notes,
+          box_score_url
         ) values (
+          ${game.gameId},
           ${game.gameDate},
           ${game.startEt},
           ${game.awayTeam},
           ${game.awayTm},
-          ${game.awayPoints.getOrElse("NULL")},
           ${game.homeTeam},
           ${game.homeTm},
-          ${game.homePoints.getOrElse("NULL")},
+          ${game.awayPoints},
+          ${game.homePoints},
           ${game.overtime},
-          ${game.attendance},
           ${game.notes},
           ${game.boxScoreUrl}
         )""".update().apply()
       }
     }
   }
+
+  def updateScore(score: Score): Unit = {
+    NamedDB('statsstore).localTx{ implicit session =>
+      sql"""update games
+        set away_pts = ${score.visitor_pts},
+           home_pt = ${score.home_pts}
+           ot = '${score.ot}'
+        where game_id = '${score.game_id}'
+       """.update().apply()
+    }
+  }
+
 }

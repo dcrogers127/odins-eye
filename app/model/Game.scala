@@ -1,27 +1,37 @@
 package model
 
-import java.time.ZonedDateTime
-import java.util.Date
-
 import scalikejdbc.WrappedResultSet
 import play.api.libs.json.Json
 
+import scala.util.Try
+
 case class Game(
-  game_id: String,
-  game_date: String,
-  start_time: String,
-  visitor: String,
-  visitor_pts: String,
-  home: String,
-  home_pts: String
-)
+   gameId: String,
+   gameDate: String,
+   startEt: String,
+   awayTeam: String,
+   awayTm: String,
+   homeTeam: String,
+   homeTm: String,
+   awayPoints: String,
+   homePoints: String,
+   overtime: String
+ )
 
 object Game {
   def fromRS(rs: WrappedResultSet): Game = {
-    Game(rs.string("game_id"),
-      rs.string("game_date"), rs.string("start_time"),
-      rs.string("visitor"), rs.string("visitor_pts"),
-      rs.string("home"), rs.string("home_pts"))
+    Game(
+      rs.string("game_id"),
+      rs.string("game_date"),
+      rs.string("start_time"),
+      rs.string("away_team"),
+      rs.string("away_tm"),
+      rs.string("home_team"),
+      rs.string("home_tm"),
+      Try(rs.int("away_pts").toString).toOption.getOrElse(""),
+      Try(rs.int("home_pts").toString).toOption.getOrElse(""),
+      rs.string("ot")
+    )
   }
 
   implicit val writes = Json.writes[Game]

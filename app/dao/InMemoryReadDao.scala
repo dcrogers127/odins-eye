@@ -9,9 +9,10 @@ class InMemoryReadDao(sGames: Seq[Game]) {
   def init(): Unit = sGames.foreach(processGames)
 
   def processGames(game: Game): Unit = {
-    games += (game.game_id -> game)
+    games += (game.gameId -> game)
   }
 
+  /*
   def processEvent(record: LogRecord): Unit = {
     record.action match {
       case GameCreated.actionName =>
@@ -28,8 +29,9 @@ class InMemoryReadDao(sGames: Seq[Game]) {
         games += (event.game_id -> game)
     }
   }
+  */
 
   def getGames: Seq[Game] = {
-    games.values.toList.sortWith(_.game_id < _.game_id)
+    games.values.toList.sortWith(_.gameId < _.gameId)
   }
 }

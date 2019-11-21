@@ -49,22 +49,22 @@ class GameManager extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell align="right">Visitor</TableCell>
-              <TableCell align="right">Visitor PTS</TableCell>
+              <TableCell align="right">Away</TableCell>
+              <TableCell align="right">Away Points</TableCell>
               <TableCell align="right">Home</TableCell>
-              <TableCell align="right">Home PTS</TableCell>
+              <TableCell align="right">Home Points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.state.games.map(row => (
-              <TableRow key={row.id}>
+              <TableRow key={row.gameId}>
                 <TableCell component="th" scope="row">
-                  {row.game_date}
+                  {row.gameDate}
                 </TableCell>
-                <TableCell align="right">{row.visitor}</TableCell>
-                <TableCell align="right">{row.visitor_pts}</TableCell>
-                <TableCell align="right">{row.home}</TableCell>
-                <TableCell align="right">{row.home_pts}</TableCell>
+                <TableCell align="right">{row.awayTeam}</TableCell>
+                <TableCell align="right">{row.awayPoints}</TableCell>
+                <TableCell align="right">{row.homeTeam}</TableCell>
+                <TableCell align="right">{row.homePoints}</TableCell>
               </TableRow>
             ))}
           </TableBody>

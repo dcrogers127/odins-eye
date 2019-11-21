@@ -10,7 +10,7 @@ CREATE TABLE games (
     away_tm varchar(3) not null,
     home_team varchar(250) not null,
     home_tm varchar(250) not null,
-    visitor_pts int,
+    away_pts int,
     home_pts int,
     ot varchar(250),
     notes varchar(250),

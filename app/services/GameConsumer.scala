@@ -21,9 +21,9 @@ class GameConsumer(readService: ReadService, gameDao: GameDao, actorSystem: Acto
     maybeLogRecord.foreach { logRecord =>
       adjustReadState(logRecord)
       val maybeGameBase = Json.fromJson[GameBase](logRecord.data)
-      maybeGameBase.foreach{ gameBase =>
-        gameDao.insertGame(gameBase)
-      }
+      // maybeGameBase.foreach{ gameBase =>
+      //   gameDao.insertGame(gameBase)
+      // }
     }
   }
 

@@ -3,6 +3,7 @@ package model
 import java.util.Date
 
 case class ScheduleElement (
+  gameId: String,
   gameDate: Date,
   startEt: String,
   awayTeam: String,
