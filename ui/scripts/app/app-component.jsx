@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import GameManager from './game-manager.jsx';
+import DatePicker from './date-picker.jsx'
 
 class AppComponent {
   init = () => {
@@ -21,6 +22,7 @@ class AppComponent {
   renderComponent = () => {
     const reactDiv = document.getElementById('reactDiv');
     if (!!reactDiv) {
+      ReactDOM.render(<DatePicker />, reactDiv);
       ReactDOM.render(<GameManager />, reactDiv);
     }
   }
