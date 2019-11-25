@@ -17,8 +17,11 @@ class MainController(components: ControllerComponents, assets: Assets,
   extends AbstractController(components) {
 
   def index = userAwareAction { request =>
-    Ok(views.html.pages.react(buildNavData(request),
-      WebPageData("Home")))
+    Ok(views.html.pages.react(buildNavData(request), WebPageData("Home")))
+  }
+
+  def games = userAwareAction { request =>
+    Ok(views.html.pages.games(buildNavData(request), WebPageData("Games")))
   }
 
   def error500 = Action {

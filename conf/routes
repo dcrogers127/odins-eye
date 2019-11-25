@@ -4,6 +4,7 @@
 
 GET     /                           controllers.MainController.index
 GET     /500                        controllers.MainController.error500
+GET     /games                      controllers.MainController.games
 
 GET     /api/games                  controllers.GameController.getGames
 
