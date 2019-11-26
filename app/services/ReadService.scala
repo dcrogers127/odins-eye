@@ -2,7 +2,7 @@ package services
 
 import actors.InMemoryReadActor
 import akka.actor.ActorSystem
-import dao.{GameDao, LogDao}
+import dao.GameDao
 import model.Game
 import play.api.Logger
 
