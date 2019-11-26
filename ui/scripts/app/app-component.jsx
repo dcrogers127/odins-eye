@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+
 import GameManager from './game-manager.jsx';
+import DateManager from './date-manager.jsx';
 
 class AppComponent {
   init = () => {
     this.initLoginRedirecting();
     this.renderComponent();
   };
+
   initLoginRedirecting = () => {
     axios.interceptors.response.use((response) => {
       return response;
@@ -18,9 +21,11 @@ class AppComponent {
       return error.response;
     });
   };
+
   renderComponent = () => {
     const reactDiv = document.getElementById('reactDiv');
     if (!!reactDiv) {
+      ReactDOM.render(<DateManager />, reactDiv);
       ReactDOM.render(<GameManager />, reactDiv);
     }
   }
