@@ -25,8 +25,12 @@ class AppComponent {
   renderComponent = () => {
     const reactDiv = document.getElementById('reactDiv');
     if (!!reactDiv) {
-      ReactDOM.render(<DateManager />, reactDiv);
-      ReactDOM.render(<GameManager />, reactDiv);
+      ReactDOM.render(
+        <div>
+          <DataManager />
+          <GameManager />
+        </div>
+      , reactDiv);
     }
   }
 }
