@@ -6,47 +6,21 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class DateManager extends React.Component {
   state = {
-    startDate: new Date(),
-    endDate: new Date()
+    startDate: new Date()
   };
 
-  handleChange = date => {
+  handleChange = startDate => {
     this.setState({
-      startDate: date,
-      endDate: date
+      startDate: startDate
     });
   };
 
   render = () => {
     return <div className="date-manager">
-      <table>
-        <thead>
-          <tr>
-            <th>Start Date</th>
-            <th>End Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div>
-                <DatePicker
-                  selected={this.state.startDate}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </td>
-              <div>
-                <DatePicker
-                  selected={this.state.endDate}
-                  onChange={this.handleChange}
-                />
-              </div>
-            <td>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <DatePicker
+        selected={this.state.startDate}
+        onChange={this.handleChange}
+      />
     </div>;
   }
 }

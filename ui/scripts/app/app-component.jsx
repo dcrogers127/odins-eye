@@ -27,7 +27,7 @@ class AppComponent {
     if (!!reactDiv) {
       ReactDOM.render(
         <div>
-          <DataManager />
+          <DateManager />
           <GameManager />
         </div>
       , reactDiv);
