@@ -10,7 +10,14 @@ class GameController(components: ControllerComponents,
 
   import scala.concurrent.ExecutionContext.Implicits.global
   def getGames = userAuthAction.async { implicit request =>
-    val gamesF = readService.getGames
+    // delete me
+    println(request.getQueryString("startDate"))
+    println(request.getQueryString("endDate"))
+
+    val gamesF = readService.getGames(
+      request.getQueryString("startDate"),
+      request.getQueryString("endDate")
+    )
     gamesF.map { games => Ok(Json.toJson(games)) }
   }
 }

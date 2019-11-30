@@ -36,7 +36,7 @@ class GameConsumer(readService: ReadService, gameDao: GameDao, actorSystem: Acto
     implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
     val imrActor = actorSystem.actorSelection(InMemoryReadActor.path)
     (imrActor ? InMemoryReadActor.ProcessEvent(logRecord)).foreach { _ =>
-      readService.getGames.foreach { games =>
+      readService.getAllGames.foreach { games =>
         val update = ServerSentMessage.create("games", games)
         val esActor = actorSystem.actorSelection(EventStreamActor.pathPattern)
         esActor ! EventStreamActor.DataUpdated(update.json)

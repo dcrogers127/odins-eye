@@ -1,10 +1,16 @@
 package dao
+import java.text.SimpleDateFormat
+import java.util.Date
+
 import events.gameInfo.GameCreated
 import model.{Game, LogRecord}
+
+import scala.util.Try
 
 class InMemoryReadDao(sGames: Seq[Game]) {
   import scala.collection.mutable.{Map => MMap}
   val games = MMap.empty[String, Game]
+  private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
 
   def init(): Unit = sGames.foreach(processGames)
 
@@ -30,8 +36,35 @@ class InMemoryReadDao(sGames: Seq[Game]) {
     }
   }
   */
+  def convertToDate(maybeDate: Option[String]): Option[Date] =
+    maybeDate.flatMap(x => Try(dateFormat.parse(x)).toOption)
 
-  def getGames: Seq[Game] = {
-    games.values.toList.sortWith(_.gameId < _.gameId)
+  def getGames(maybeStartDate: Option[String], maybeEndDate: Option[String]): Seq[Game] = {
+    val mStartDate = convertToDate(maybeStartDate)
+    val mEndDate = convertToDate(maybeEndDate)
+    println(maybeStartDate)
+    println(mStartDate)
+    println(mEndDate)
+    (mStartDate, mEndDate) match {
+      case (Some(startDate), Some(endDate)) =>
+        if (startDate.after(endDate)) Seq()
+        else {
+          val strStartDate = dateFormat.format(startDate)
+          val strEndDate = dateFormat.format(endDate)
+          println("InMemDao")
+          println(s"strStartDate: $strStartDate, strEndDate: $strEndDate")
+          games.values
+            .filter(game => game.gameDate >= strStartDate &  game.gameDate <= strEndDate)
+            .toList.sortWith(_.gameId < _.gameId)
+        }
+      case _ => Seq()
+    }
   }
+
+  def getAllGames: Seq[Game] = games.values.toList.sortWith(_.gameId < _.gameId)
+
+  //def validateDates(maybeStartDate: Option[String], maybeEndDate: Option[String]): Option[(Date, Date)] = {
+
+  //}
+
 }

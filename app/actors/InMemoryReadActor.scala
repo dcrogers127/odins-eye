@@ -12,7 +12,8 @@ class InMemoryReadActor(games: Seq[Game])
 
   override def receive: Receive = {
     case InitializeState => gameDao.init
-    case GetGames => sender() ! gameDao.getGames
+    case GetGames(maybeStartDate, maybeEndDate) => sender() ! gameDao.getGames(maybeStartDate, maybeEndDate)
+    case GetAllGames => sender() ! gameDao.getAllGames
     // case ProcessEvent(event) => sender() ! gameDao.processEvent(event)
   }
 }
@@ -20,7 +21,8 @@ class InMemoryReadActor(games: Seq[Game])
 object InMemoryReadActor {
   case class ProcessEvent(event: LogRecord)
   case object InitializeState
-  case object GetGames
+  case class GetGames(maybeStartDate: Option[String], maybeEndDate: Option[String])
+  case object GetAllGames
 
   val name = "in-memory-read-actor"
   val path = s"/user/$name"

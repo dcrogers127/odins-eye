@@ -1,26 +1,15 @@
-import React from 'react';
-import DateManager from './date-manager.jsx';
+import React, { useState } from 'react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-class DateRangeManager extends React.Component {
-  state = {
-    startDate: new Date(),
-    endDate: new Date()
-  };
 
-  handleStartChange = startDate => {
-    this.setState({
-      startDate: startDate
-    });
-  };
-
-  handleEndChange = endDate => {
-    this.setState({
-      startDate: startDate
-    });
-  };
+class DateRange extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   render = () => {
-    return <div>
+    return <div className="date-range-manager">
       <table>
         <thead>
           <tr>
@@ -32,13 +21,19 @@ class DateRangeManager extends React.Component {
           <tr>
             <td>
               <DatePicker
-                selected={this.state.startDate}
-                onChange={this.handleStartChange}
+                selected={this.props.startDate}
+                onChange={this.props.onStartChange}
+                selectsStart
+                startDate={this.props.startDate}
+                endDate={this.props.endDate}
               />
             </td>
               <DatePicker
-                selected={this.state.endDate}
-                onChange={this.handleEndChange}
+                selected={this.props.endDate}
+                onChange={this.props.onEndChange}
+                selectsEnd
+                endDate={this.props.endDate}
+                minDate={this.props.startDate}
               />
             <td>
             </td>
@@ -49,4 +44,4 @@ class DateRangeManager extends React.Component {
   }
 }
 
-export default DateManager;
+export default DateRange;

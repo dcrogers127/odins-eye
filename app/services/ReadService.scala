@@ -33,10 +33,16 @@ class ReadService(actorSystem: ActorSystem, gameDao: GameDao, gameProducer: Game
   import scala.concurrent.Future
   import akka.pattern.ask
 
-  def getGames: Future[Seq[Game]] = {
+  def getGames(maybeStartDate: Option[String], maybeEndDate: Option[String]): Future[Seq[Game]] = {
     implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
     val actor = actorSystem.actorSelection(InMemoryReadActor.path)
-    (actor ? InMemoryReadActor.GetGames).mapTo[Seq[Game]]
+    (actor ? InMemoryReadActor.GetGames(maybeStartDate, maybeEndDate)).mapTo[Seq[Game]]
+  }
+
+  def getAllGames: Future[Seq[Game]] = {
+    implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
+    val actor = actorSystem.actorSelection(InMemoryReadActor.path)
+    (actor ? InMemoryReadActor.GetAllGames).mapTo[Seq[Game]]
   }
 }
 

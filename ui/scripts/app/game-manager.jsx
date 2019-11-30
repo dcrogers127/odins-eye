@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+import DateRange from './date-range-manager.jsx';
+
 const useStyles = makeStyles({
   root: {
     width: '100%',
@@ -19,16 +21,21 @@ const useStyles = makeStyles({
   },
 });
 
+const dayDuration = 1000 * 3600 * 24;
+const initStartDate = new Date();
+
 class GameManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      games: []
+      games: [],
+      startDate: initStartDate,
+      endDate: new Date(initStartDate.getTime() + 2 * dayDuration)
     };
   };
 
   handleResponse = (response) => {
-    console.log(response);
+    console.log(response); // delete me
     if (response.status == 200) {
       this.setState({
         games: response.data
@@ -39,37 +46,51 @@ class GameManager extends React.Component {
   };
 
   componentDidMount = () => {
-    axios.get("/api/games").then(this.handleResponse);
+    axios.get("/api/games", {
+      params: {
+        startDate: this.state.startDate,
+        endDate: this.state.endDate
+      }
+    })
+    .then(this.handleResponse);
   };
 
   render = () => {
     return <div className="game-manager">
-      <Paper className={"root"}>
-        <Table className={"table"} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Date</TableCell>
-              <TableCell align="right">Away</TableCell>
-              <TableCell align="right">Away Points</TableCell>
-              <TableCell align="right">Home</TableCell>
-              <TableCell align="right">Home Points</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.games.map(row => (
-              <TableRow key={row.gameId}>
-                <TableCell component="th" scope="row">
-                  {row.gameDate}
-                </TableCell>
-                <TableCell align="right">{row.awayTeam}</TableCell>
-                <TableCell align="right">{row.awayPoints}</TableCell>
-                <TableCell align="right">{row.homeTeam}</TableCell>
-                <TableCell align="right">{row.homePoints}</TableCell>
+      <DateRange
+        startDate={this.state.startDate}
+        endDate={this.state.endDate}
+        onStartChange={date => this.setState({startDate: date})}
+        onEndChange={date => this.setState({endDate: date})}
+      />
+      <div>
+        <Paper className={"paper"}>
+          <Table className={"table"} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Date</TableCell>
+                <TableCell align="right">Away</TableCell>
+                <TableCell align="right">Away Points</TableCell>
+                <TableCell align="right">Home</TableCell>
+                <TableCell align="right">Home Points</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+            </TableHead>
+            <TableBody>
+              {this.state.games.map(row => (
+                <TableRow key={row.gameId}>
+                  <TableCell component="th" scope="row">
+                    {row.gameDate}
+                  </TableCell>
+                  <TableCell align="right">{row.awayTeam}</TableCell>
+                  <TableCell align="right">{row.awayPoints}</TableCell>
+                  <TableCell align="right">{row.homeTeam}</TableCell>
+                  <TableCell align="right">{row.homePoints}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </div>
     </div>;
   }
 }

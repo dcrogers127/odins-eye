@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import GameManager from './game-manager.jsx';
-import DateManager from './date-manager.jsx';
 
 class AppComponent {
   init = () => {
@@ -25,12 +24,7 @@ class AppComponent {
   renderComponent = () => {
     const reactDiv = document.getElementById('reactDiv');
     if (!!reactDiv) {
-      ReactDOM.render(
-        <div>
-          <DateManager />
-          <GameManager />
-        </div>
-      , reactDiv);
+      ReactDOM.render(<GameManager />, reactDiv);
     }
   }
 }
