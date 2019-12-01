@@ -35,7 +35,6 @@ class GameManager extends React.Component {
   };
 
   handleResponse = (response) => {
-    console.log(response); // delete me
     if (response.status == 200) {
       this.setState({
         games: response.data
@@ -55,13 +54,35 @@ class GameManager extends React.Component {
     .then(this.handleResponse);
   };
 
+  onStartChange = (date) => {
+    this.setState({startDate: date});
+    axios.get("/api/games", {
+      params: {
+        startDate: date,
+        endDate: this.state.endDate
+      }
+    })
+    .then(this.handleResponse);
+  };
+
+  onEndChange = (date) => {
+    this.setState({endDate: date});
+    axios.get("/api/games", {
+      params: {
+        startDate: this.state.startDate,
+        endDate: date
+      }
+    })
+    .then(this.handleResponse);
+  };
+
   render = () => {
     return <div className="game-manager">
       <DateRange
         startDate={this.state.startDate}
         endDate={this.state.endDate}
-        onStartChange={date => this.setState({startDate: date})}
-        onEndChange={date => this.setState({endDate: date})}
+        onStartChange={this.onStartChange}
+        onEndChange={this.onEndChange}
       />
       <div>
         <Paper className={"paper"}>

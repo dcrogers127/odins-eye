@@ -42,17 +42,12 @@ class InMemoryReadDao(sGames: Seq[Game]) {
   def getGames(maybeStartDate: Option[String], maybeEndDate: Option[String]): Seq[Game] = {
     val mStartDate = convertToDate(maybeStartDate)
     val mEndDate = convertToDate(maybeEndDate)
-    println(maybeStartDate)
-    println(mStartDate)
-    println(mEndDate)
     (mStartDate, mEndDate) match {
       case (Some(startDate), Some(endDate)) =>
         if (startDate.after(endDate)) Seq()
         else {
           val strStartDate = dateFormat.format(startDate)
           val strEndDate = dateFormat.format(endDate)
-          println("InMemDao")
-          println(s"strStartDate: $strStartDate, strEndDate: $strEndDate")
           games.values
             .filter(game => game.gameDate >= strStartDate &  game.gameDate <= strEndDate)
             .toList.sortWith(_.gameId < _.gameId)
@@ -62,9 +57,4 @@ class InMemoryReadDao(sGames: Seq[Game]) {
   }
 
   def getAllGames: Seq[Game] = games.values.toList.sortWith(_.gameId < _.gameId)
-
-  //def validateDates(maybeStartDate: Option[String], maybeEndDate: Option[String]): Option[(Date, Date)] = {
-
-  //}
-
 }

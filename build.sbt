@@ -22,9 +22,6 @@ libraryDependencies ++= Seq(
   "org.scalikejdbc" %% "scalikejdbc-config"  % "3.3.2",
   "ch.qos.logback"  %  "logback-classic" % "1.2.3",
   "de.svenkubiak" % "jBCrypt" % "0.4.1",
-  "com.chuusai" %% "shapeless" % "2.3.3",
-  "au.com.bytecode" % "opencsv" % "2.4",
-  "de.svenkubiak" % "jBCrypt" % "0.4.1",
   "com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC1",
   "org.jsoup" % "jsoup" % "1.8.3"
 )

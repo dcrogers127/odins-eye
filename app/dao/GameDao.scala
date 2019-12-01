@@ -1,117 +1,19 @@
 package dao
 
-import java.text.SimpleDateFormat
-
 import model._
-// import fileio.RowParser.rowParserFor
 import scalikejdbc._
-// import au.com.bytecode.opencsv._
 import common.Common.{teamToTm, _}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import play.api.Logger
 
-// import scala.collection.JavaConverters._
 import scala.collection.mutable.ArrayBuffer
 import scala.util.{Failure, Success, Try}
 
 class GameDao {
   val log = Logger(this.getClass)
 
-  private val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
-  private val brWebDataFormat = new SimpleDateFormat("E, MMM dd, yyyy")
   private val sleepSecs = 3
-
-/*
-  private val dataPath = "public/data/games.csv"
-  private val brDataFormat = new SimpleDateFormat("E MMM dd yyyy")
-
-  def processGameCSV: List[GameBase] = {
-    val reader = new CSVReader(new java.io.FileReader(dataPath))
-    val rows = reader.readAll.asScala
-      .map(row => rowParserFor[GameCSV](row.toList))
-      .toList
-      .flatMap(_.toOption)
-    rows.map {
-      case GameCSV(game_date_str, start_et, visitor, _, home, _, _, _, _, _ ) => {
-        val game_date = brDataFormat.parse(game_date_str)
-        val gameDateStr = dateFormat.format(game_date)
-        GameBase(
-          s"$gameDateStr-$visitor-$home",
-          game_date,
-          start_et,
-          visitor,
-          home
-        )
-      }
-    }
-  }
-
-  def insertGame(game: GameBase): Unit = {
-    NamedDB('statsstore).localTx{ implicit session =>
-      sql"""insert into games (
-            game_id,
-            game_date,
-            start_time,
-            visitor,
-            home
-        ) values (
-           ${game.game_id},
-           ${game.game_date},
-           ${game.start_time},
-           ${game.visitor},
-           ${game.home}
-     )""".update().apply()
-    }
-  }
-
-  def batchInsertGames: Unit = {
-    val reader = new CSVReader(new java.io.FileReader(dataPath))
-    val rows = reader.readAll.asScala.map(row => rowParserFor[GameCSV](row.toList))
-    NamedDB('statsstore).localTx{ implicit session =>
-      sql"delete from stg_games".update().apply()
-      for (row <- rows) {
-        row match {
-          case Success(GameCSV(
-          game_date,
-          start_et,
-          visitor,
-          visitor_pts,
-          home,
-          home_pts,
-          box_score_url,
-          ot,
-          attend,
-          notes
-          )) => sql"""insert into stg_games (
-             game_date,
-             start_et,
-             visitor,
-             visitor_pts,
-             home,
-             home_pts,
-             box_score_url,
-             ot,
-             attend,
-             notes
-           ) values (
-             $game_date,
-             $start_et,
-             $visitor,
-             $visitor_pts,
-             $home,
-             $home_pts,
-             $box_score_url,
-             $ot,
-             $attend,
-             $notes
-           )""".update().apply()
-          case _ => Unit
-        }
-      }
-    }
-  }
-  */
 
   def initGames: Try[Seq[Game]] = Try {
     NamedDB('statsstore).readOnly { implicit session =>

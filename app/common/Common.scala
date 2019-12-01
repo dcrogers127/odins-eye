@@ -1,7 +1,11 @@
 package common
+import java.text.SimpleDateFormat
 
 object Common {
   val currentYear = "2020"
+
+  val dateFormat = new SimpleDateFormat("yyyy-MM-dd")
+  val brWebDataFormat = new SimpleDateFormat("E, MMM dd, yyyy")
 
   val teamToTm = Map(
     "Atlanta Hawks" -> "ATL",
