@@ -1,5 +1,7 @@
 package services
 
+import java.util.Date
+
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import util.Common.monthNumToStr
@@ -12,22 +14,28 @@ import model.{GameId, LogRecord, ScheduleElement}
 class ScoreCheckConsumer(actorSystem: ActorSystem, configuration: Configuration, materializer: Materializer,
                          gameDao: GameDao, bBallRefDao: BBallRefDao) {
 
-  val topicName = "score-check"
+  val topicName = "games"
   val serviceKafkaConsumer = new ServiceKafkaConsumer(Set(topicName),
     "scheduler", materializer, actorSystem, configuration, handleEvent)
 
   private def handleEvent(event: String): Unit = {
     val maybeLogRecord = LogRecord.decode(event)
-    maybeLogRecord.foreach(checkUpdateScores)
+    maybeLogRecord.foreach{
+      _.action match {
+        case ScoreCheck.actionName => checkUpdateScores(_)
+        case _ => Unit
+      }
+    }
   }
 
   private def checkUpdateScores(logRecord: LogRecord): Unit = {
-
-  }
-
-  private def checkScores(logRecord: LogRecord): Seq[ScheduleElement] = {
     val scoreCheck = logRecord.data.as[ScoreCheck]
     val today = java.sql.Date.valueOf(scoreCheck.timeScheduled.toLocalDate)
+    val newScores = checkScores(today)
+    updateScores(newScores)
+  }
+
+  private def checkScores(today: Date): Seq[ScheduleElement] = {
     val gameIdsNoScore = gameDao.missingScores(today)
     val gameIdsNoScoreStr = gameDao.missingScores(today).map(_.gameId)
     val monthsToCheck = missingScoreMonths(gameIdsNoScore)
@@ -41,9 +49,8 @@ class ScoreCheckConsumer(actorSystem: ActorSystem, configuration: Configuration,
     newGameIds
   }
 
-  private def updateScores(scores: Seq[ScheduleElement]): Unit = {
-
-  }
+  private def updateScores(scores: Seq[ScheduleElement]): Unit =
+    scores.foreach{ gameDao.updateScore }
 
   private def missingScoreMonths(gameIds: Seq[GameId]): Seq[(String, String)] = {
     gameIds.map{gameId =>

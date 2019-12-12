@@ -29,7 +29,7 @@ class GameManager extends React.Component {
     super(props);
     this.state = {
       games: [],
-      startDate: initStartDate,
+      startDate: new Date(initStartDate.getTime() - 1 * dayDuration),
       endDate: new Date(initStartDate.getTime() + 2 * dayDuration)
     };
   };

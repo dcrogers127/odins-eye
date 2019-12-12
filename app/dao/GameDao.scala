@@ -92,10 +92,10 @@ class GameDao {
   def updateScore(score: ScheduleElement): Unit = {
     NamedDB('statsstore).localTx{ implicit session =>
       sql"""update games
-        set away_pts = ${score.awayPoints},
-           home_pt = ${score.homePoints}
-           ot = '${score.overtime}'
-        where game_id = '${score.gameId}'
+        set away_pts = ${score.awayPoints.get},
+           home_pts = ${score.homePoints.get},
+           ot = ${score.overtime}
+        where game_id = ${score.gameId}
        """.update().apply()
     }
   }
