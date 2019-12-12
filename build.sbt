@@ -1,5 +1,5 @@
-name := """play-event-sourcing-starter"""
-organization := "com.appliedscala.seeds.es"
+name := """odins-eye"""
+organization := "com.odins.eye"
 version := "1.0-SNAPSHOT"
 scalaVersion := "2.12.8"
 

@@ -6,7 +6,7 @@ import java.util.UUID
 
 import events.EventData
 import events.gameInfo.GameCreated
-import model.{GameBase, LogRecord, Score}
+import model.{GameBase, LogRecord}
 import play.api.Configuration
 import util.ServiceKafkaProducer
 
@@ -27,13 +27,6 @@ class GameProducer(actorSystem: ActorSystem, configuration: Configuration) {
     val record = createLogRecord(event)
     kafkaProducer.send(record.encode)
   }
-
-  // def addScore(game: Score): Unit = {
-  //   val id = UUID.randomUUID()
-  //   val event = GameCreated(id, game)
-  //   val record = createLogRecord(event)
-  //   kafkaProducer.send(record.encode)
-  // }
 
   private def createLogRecord(eventData: EventData): LogRecord = {
     LogRecord(UUID.randomUUID(), eventData.action, eventData.json, ZonedDateTime.now())

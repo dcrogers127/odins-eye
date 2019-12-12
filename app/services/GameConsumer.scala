@@ -1,6 +1,7 @@
 package services
 
-import actors.{EventStreamActor, InMemoryReadActor}
+/*
+import actors.EventStreamActor
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import dao.GameDao
@@ -34,8 +35,8 @@ class GameConsumer(readService: ReadService, gameDao: GameDao, actorSystem: Acto
 
   private def adjustReadState(logRecord: LogRecord): Unit = {
     implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
-    val imrActor = actorSystem.actorSelection(InMemoryReadActor.path)
-    (imrActor ? InMemoryReadActor.ProcessEvent(logRecord)).foreach { _ =>
+    val imrActor = actorSystem.actorSelection(EventStreamActor.pathPattern)
+    (imrActor ? EventStreamActor.ProcessEvent(logRecord)).foreach { _ =>
       readService.getAllGames.foreach { games =>
         val update = ServerSentMessage.create("games", games)
         val esActor = actorSystem.actorSelection(EventStreamActor.pathPattern)
@@ -44,3 +45,4 @@ class GameConsumer(readService: ReadService, gameDao: GameDao, actorSystem: Acto
     }
   }
 }
+*/

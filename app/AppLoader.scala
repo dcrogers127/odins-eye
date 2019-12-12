@@ -10,7 +10,7 @@ import dao._
 import play.api.mvc.DefaultControllerComponents
 import scalikejdbc.config.DBs
 import security.{UserAuthAction, UserAwareAction}
-import services._
+import services.{ScoreCheckScheduler, _}
 
 import scala.concurrent.Future
 
@@ -49,12 +49,14 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   lazy val userAwareAction = wire[UserAwareAction]
   lazy val readService: ReadService = wire[ReadService]
 
-  lazy val gameProducer = wire[GameProducer]
   lazy val logRecordConsumer = wire[LogRecordConsumer]
-  lazy val gameConsumer = wire[GameConsumer]
   lazy val consumerAggregator = wire[ConsumerAggregator]
 
   lazy val gameDao: GameDao = wire[GameDao]
+  lazy val bBallRefDao: BBallRefDao = wire[BBallRefDao]
+
+  lazy val scoreCheckScheduler: ScoreCheckScheduler = wire[ScoreCheckScheduler]
+  lazy val scoreCheckConsumer: ScoreCheckConsumer = wire[ScoreCheckConsumer]
 
   override lazy val dynamicEvolutions = new DynamicEvolutions
 
@@ -67,7 +69,8 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
     DBs.setupAll()
     val evolutions = applicationEvolutions
     if (evolutions.upToDate) {
-      readService.init()
+      readService.init(initDB = false)
     }
+    scoreCheckScheduler.init()
   }
 }

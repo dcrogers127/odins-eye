@@ -1,48 +1,50 @@
 package services
 
-import actors.InMemoryReadActor
-import akka.actor.ActorSystem
-import dao.GameDao
+import java.util.Date
+
+import util.Common.{dateFormat, currentYear}
+import dao.{BBallRefDao, GameDao}
 import model.Game
-import play.api.Logger
 
-import scala.util.{Failure, Success}
+import scala.util.{Success, Try}
 
-class ReadService(actorSystem: ActorSystem, gameDao: GameDao, gameProducer: GameProducer) {
-  val log = Logger(this.getClass)
-
-  def init(initDB: Boolean = false): Unit = {
+class ReadService(gameDao: GameDao, bBallRefDao: BBallRefDao) {
+  def init(initDB: Boolean = true): Unit = {
     if (initDB) {
       gameDao.cleanGameDB
-      gameDao.initGameDB
-    }
-    val gamesT = gameDao.initGames
-    gamesT match {
-      case Failure(th) =>
-        log.error("Error while initializing the game read service", th)
-        throw th
-      case Success(games) =>
-        val actor = actorSystem.actorOf(
-          InMemoryReadActor.props(games), InMemoryReadActor.name)
-        actor ! InMemoryReadActor.InitializeState
+      val games = bBallRefDao.getSchedule(currentYear)
+      gameDao.initGameDB(games)
     }
   }
 
-  import java.util.concurrent.TimeUnit
-  import akka.util.Timeout
-  import scala.concurrent.Future
-  import akka.pattern.ask
-
-  def getGames(maybeStartDate: Option[String], maybeEndDate: Option[String]): Future[Seq[Game]] = {
-    implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
-    val actor = actorSystem.actorSelection(InMemoryReadActor.path)
-    (actor ? InMemoryReadActor.GetGames(maybeStartDate, maybeEndDate)).mapTo[Seq[Game]]
+  def getGames(maybeStartDate: Option[String], maybeEndDate: Option[String]): Seq[Game] = {
+    val mStartDate = convertToDate(maybeStartDate)
+    val mEndDate = convertToDate(maybeEndDate)
+    (mStartDate, mEndDate) match {
+      case (Some(startDate), Some(endDate)) =>
+        if (startDate.after(endDate)) Seq()
+        else {
+          val tryGames = gameDao.getGamesFromDb(startDate, endDate)
+          tryGames match {
+            case Success(games) => games.sortWith(_.gameId < _.gameId)
+            // ToDo: Throw failure or something here
+            case _ => Seq()
+          }
+        }
+      case _ => Seq()
+    }
   }
 
-  def getAllGames: Future[Seq[Game]] = {
-    implicit val timeout = Timeout.apply(5, TimeUnit.SECONDS)
-    val actor = actorSystem.actorSelection(InMemoryReadActor.path)
-    (actor ? InMemoryReadActor.GetAllGames).mapTo[Seq[Game]]
+  def getAllGames: Seq[Game] = {
+    val tryAllGames = gameDao.getAllGamesFromDb
+    tryAllGames match {
+      case Success(games) =>games.sortWith(_.gameId < _.gameId)
+      // ToDo: Throw failure or something here
+      case _ => Seq()
+    }
   }
+
+  def convertToDate(maybeDate: Option[String]): Option[Date] =
+    maybeDate.flatMap(x => Try(dateFormat.parse(x)).toOption)
 }
 

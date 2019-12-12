@@ -1,22 +1,20 @@
 # odins-eye
 
-Goals:
-1. Abstract InMemoryDao\Actor to generalize events
-    1. Add actions
-        1. add_game
-        2. add_score
-        3. compute_game_stats
-        4. add_lines 
-3. Page with all actions logged with most recent at top.
-
 Base from sbt new denisftw/play-event-sourcing-starter.g8.
 
 ## Current Plan
+1. Add actions
+    1. add_game
+    2. add_score
+    3. compute_game_stats
+    4. add_lines 
 1. Update scores for existing games into DB
     - could be an event per games or just one event
 2. Create process to daily check for new scores and update.
-3. Get historic spread info
-4. Get current spread info
+3. Spread info
+    - Get historic spread info
+    - Get current spread info
+    - hold for now. get some good stats
 
 We want to log any change to main database to the events table
 Actual state of database will be in statsstore
@@ -47,8 +45,22 @@ npm run watch
 
 sbt run
 
+### Generate key
+sbt
+
+playGenerateSecret
 
 ### Notes
 Rendering table with npm package material-ui (see https://material-ui.com)
 
-Sports API with free tier.
+Sports API for line info:
+- https://oddsapi.io/
+    - doesn't look good
+- https://jsonodds.com/
+    - only provides one number
+- https://therundown.io/
+    - looks interesting
+- https://sportradar.us/sports-data/
+    - ???
+- https://sportsdata.io/live-odds-api
+    - Have to email to get any info
