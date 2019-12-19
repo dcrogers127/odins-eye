@@ -56,7 +56,7 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   lazy val bBallRefDao: BBallRefDao = wire[BBallRefDao]
 
   lazy val scoreCheckScheduler: ScoreCheckScheduler = wire[ScoreCheckScheduler]
-  lazy val scoreCheckConsumer: ScoreCheckConsumer = wire[ScoreCheckConsumer]
+  lazy val scoreCheckConsumer: ScoreConsumer = wire[ScoreConsumer]
 
   override lazy val dynamicEvolutions = new DynamicEvolutions
 

@@ -7,7 +7,7 @@ import play.api.libs.json.{JsValue, Json, Reads}
 
 case class ScoreCheck(
   timeScheduled: ZonedDateTime
-) extends EventData{
+) extends EventData {
   override def action: String = ScoreCheck.actionName
   override def json: JsValue = Json.writes[ScoreCheck].writes(this)
 }

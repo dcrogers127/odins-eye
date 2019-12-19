@@ -1,4 +1,4 @@
 package services
 
-class ConsumerAggregator(scoreCheckConsumer: ScoreCheckConsumer, logRecordConsumer: LogRecordConsumer)
+class ConsumerAggregator(scoreCheckConsumer: ScoreConsumer, logRecordConsumer: LogRecordConsumer)
 

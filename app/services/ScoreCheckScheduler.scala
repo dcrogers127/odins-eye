@@ -1,12 +1,10 @@
 package services
 
 import java.time.ZonedDateTime
-import java.util.UUID
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
 import akka.stream.scaladsl.{Sink, Source}
-import events.EventData
 import events.gameInfo.ScoreCheck
 import model.LogRecord
 import play.api.Configuration
@@ -26,10 +24,10 @@ class ScoreCheckScheduler(actorSystem: ActorSystem, configuration: Configuration
         30.seconds,
         30.seconds,
         "tick"
-      ).map(_ => createLogRecord(ScoreCheck(ZonedDateTime.now())).encode)
-      .map(kafkaProducer.send)
+      ).map{ _ =>
+        val event = LogRecord.createLogRecord(ScoreCheck(ZonedDateTime.now())).encode
+        kafkaProducer.send(event)
+      }
       .runWith(Sink.ignore)
 
-  private def createLogRecord(eventData: EventData): LogRecord =
-    LogRecord(UUID.randomUUID(), eventData.action, eventData.json, ZonedDateTime.now())
 }

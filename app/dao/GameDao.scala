@@ -7,6 +7,7 @@ import scalikejdbc._
 import play.api.Logger
 
 import scala.util.Try
+import scalikejdbc.TxBoundary.Try._
 
 class GameDao {
   val log = Logger(this.getClass)
@@ -89,14 +90,16 @@ class GameDao {
     }
   }
 
-  def updateScore(score: ScheduleElement): Unit = {
+  def updateScore(score: ScheduleElement): Try[Unit] = {
     NamedDB('statsstore).localTx{ implicit session =>
-      sql"""update games
-        set away_pts = ${score.awayPoints.get},
-           home_pts = ${score.homePoints.get},
-           ot = ${score.overtime}
-        where game_id = ${score.gameId}
-       """.update().apply()
+      Try {
+        sql"""update games
+          set away_pts = ${score.awayPoints.get},
+             home_pts = ${score.homePoints.get},
+             ot = ${score.overtime}
+          where game_id = ${score.gameId}
+         """.update().apply()
+      }
     }
   }
 
