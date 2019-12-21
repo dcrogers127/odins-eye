@@ -16,8 +16,8 @@ class ScoreCheckScheduler(actorSystem: ActorSystem, configuration: Configuration
   implicit val materializer: Materializer
 ) {
 
-  val topicName = "games"
-  val kafkaProducer = new ServiceKafkaProducer(topicName, actorSystem, configuration)
+  val topicName = "score"
+  val kafkaProducer = new ServiceKafkaProducer(actorSystem, configuration)
 
   def init(): Unit =
     Source.tick(
@@ -26,7 +26,7 @@ class ScoreCheckScheduler(actorSystem: ActorSystem, configuration: Configuration
         "tick"
       ).map{ _ =>
         val event = LogRecord.createLogRecord(ScoreCheck(ZonedDateTime.now())).encode
-        kafkaProducer.send(event)
+        kafkaProducer.send(event, topicName)
       }
       .runWith(Sink.ignore)
 

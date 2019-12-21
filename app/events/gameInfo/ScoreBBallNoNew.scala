@@ -7,7 +7,6 @@ import java.time.ZonedDateTime
 case class ScoreBBallNoNew (
   timeScheduled: ZonedDateTime
 ) extends EventData {
-  import play.api.libs.json.Json
   override def action: String = ScoreBBallNoNew.actionName
   override def json: JsValue = Json.writes[ScoreBBallNoNew].writes(this)
 }

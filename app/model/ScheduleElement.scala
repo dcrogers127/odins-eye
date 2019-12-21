@@ -2,6 +2,8 @@ package model
 
 import java.util.Date
 
+import play.api.libs.json.Json
+
 case class ScheduleElement (
   gameId: String,
   gameDate: Date,
@@ -17,3 +19,8 @@ case class ScheduleElement (
   notes: String,
   boxScoreUrl: String
 )
+
+object ScheduleElement {
+  implicit val writes = Json.writes[ScheduleElement]
+  implicit val reads = Json.reads[ScheduleElement]
+}

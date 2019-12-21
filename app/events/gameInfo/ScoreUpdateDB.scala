@@ -2,12 +2,12 @@ package events.gameInfo
 import java.time.ZonedDateTime
 
 import events.EventData
-import model.ScheduleElement
+import model.ScheduleElements
 import play.api.libs.json.{JsValue, Json, Reads}
 
 case class ScoreUpdateDB (
                            timeScheduled: ZonedDateTime,
-                           newScores: Seq[ScheduleElement]
+                           newScores: ScheduleElements
                          ) extends EventData {
   override def action: String = ScoreUpdateDB.actionName
   override def json: JsValue = Json.writes[ScoreUpdateDB].writes(this)

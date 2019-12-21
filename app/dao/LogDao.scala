@@ -13,8 +13,8 @@ class LogDao {
   def insertLogRecord(event: LogRecord): Try[Unit] = Try {
     NamedDB('eventstore).localTx { implicit session =>
       val jsonStr = event.data.toString()
-      sql"""insert into logs(record_id, action_name, event_data, timestamp)
-            values(${event.id}, ${event.action}, $jsonStr, ${event.timestamp})""".
+      sql"""insert into logs(record_id, orig_record_id, action_name, event_data, timestamp)
+            values(${event.id}, ${event.orig_record_id}, ${event.action}, $jsonStr, ${event.timestamp})""".
         update().apply()
     }
   }
@@ -27,9 +27,11 @@ class LogDao {
   }
 
   private def rs2LogRecord(rs: WrappedResultSet): LogRecord = {
-    LogRecord(UUID.fromString(rs.string("record_id")),
+    LogRecord(
+      UUID.fromString(rs.string("record_id")), UUID.fromString(rs.string("orig_record_id")),
       rs.string("action_name"), Json.parse(rs.string("event_data")),
-      rs.dateTime("timestamp"))
+      rs.dateTime("timestamp")
+    )
   }
 }
 

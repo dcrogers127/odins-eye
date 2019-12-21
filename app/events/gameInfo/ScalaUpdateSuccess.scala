@@ -13,7 +13,7 @@ case class ScalaUpdateSuccess (
 }
 
 object ScalaUpdateSuccess {
-  val actionName = "score-update-failure"
+  val actionName = "score-update-success"
   implicit val reads: Reads[ScalaUpdateSuccess] = Json.reads[ScalaUpdateSuccess]
 
 }

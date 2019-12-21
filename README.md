@@ -3,16 +3,13 @@
 Base from sbt new denisftw/play-event-sourcing-starter.g8.
 
 ## Current Plan
-1. Improve logging
-    - We want to log any change to main database to the events table
-    - Actual state of database will be in statsstore
-2. Add team stats
+1. Add team stats
     - MOV - Margin of victory
     - SOS - Strength of Schedule
     - SRS - Simple Rating System
-3. Deploy to aws beanstalk? using docker
+2. Deploy to aws beanstalk? using docker
     - try sample apps first.  Add in dependencies
-4. Spread info
+3. Spread info
     - Get historic spread info
     - Get current spread info
     - hold for now. get some good stats
@@ -29,6 +26,7 @@ sudo createdb -U postgres -O scalauser statsstoredb
 
 npm i
 
+// sudo dropdb -U postgres eventstoredb
 // sudo dropdb -U postgres statsstoredb
 
 

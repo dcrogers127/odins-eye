@@ -10,7 +10,7 @@ import util.ServiceKafkaConsumer
 class LogRecordConsumer(logDao: LogDao, actorSystem: ActorSystem,
                         configuration: Configuration, materializer: Materializer) {
 
-  val topics = Seq("games").toSet
+  val topics = Seq("score", "log").toSet
   val serviceKafkaConsumer = new ServiceKafkaConsumer(topics,
     "log", materializer, actorSystem, configuration, handleEvent)
 

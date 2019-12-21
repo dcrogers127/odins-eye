@@ -7,8 +7,7 @@ import org.apache.kafka.clients.producer.RecordMetadata
 import play.api.Configuration
 
 
-class ServiceKafkaProducer(topicName: String,
-                           actorSystem: ActorSystem, configuration: Configuration) {
+class ServiceKafkaProducer(actorSystem: ActorSystem, configuration: Configuration) {
 
   val bootstrapServers = configuration.get[String]("kafka.bootstrap.servers")
 
@@ -21,7 +20,7 @@ class ServiceKafkaProducer(topicName: String,
   val producer = producerSettings.createKafkaProducer()
 
   import org.apache.kafka.clients.producer.ProducerRecord
-  def send(logRecordStr: String): Future[RecordMetadata] = {
+  def send(logRecordStr: String, topicName: String): Future[RecordMetadata] = {
     producer.send(new ProducerRecord(topicName, logRecordStr))
   }
 }
